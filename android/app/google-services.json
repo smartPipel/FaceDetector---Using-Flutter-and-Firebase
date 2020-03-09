@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "35787559776",
+    "firebase_url": "https://mlkitcoba.firebaseio.com",
+    "project_id": "mlkitcoba",
+    "storage_bucket": "mlkitcoba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35787559776:android:b9d339107db560b6db4405",
+        "android_client_info": {
+          "package_name": "com.alfa.facedetect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "35787559776-j64uon9b35a007e98pu7t3hp8mmcrvfn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCib5ecw3SDRwl_OVs2yORMxoWfAK7QwRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "35787559776-j64uon9b35a007e98pu7t3hp8mmcrvfn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
