@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_face_detector/FacePainter.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FaceDetector extends StatefulWidget {
@@ -18,15 +19,28 @@ class _FaceDetectorState extends State<FaceDetector> {
 
   Future getImage(bool camera) async {
     File image;
+    File croppedImage;
 
     if (camera) {
       image = await ImagePicker.pickImage(source: ImageSource.camera);
+      croppedImage = await ImageCropper.cropImage(
+      sourcePath: image.path,
+      aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+      maxWidth: 512,
+      maxHeight: 512,
+    );
     } else {
       image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      croppedImage = await ImageCropper.cropImage(
+      sourcePath: image.path,
+      aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+      maxWidth: 512,
+      maxHeight: 512,
+    );
     }
 
     setState(() {
-      _imageFile = image;
+      _imageFile = croppedImage;
       isLoading = true;
     });
 
@@ -63,40 +77,71 @@ class _FaceDetectorState extends State<FaceDetector> {
       ),
       body: isLoading
           ? Center(
-              child: CircularProgressIndicator(),
+              child: Container(
+                    width: MediaQuery.of(context).size.width /1.1,
+                    height: MediaQuery.of(context).size.height/2,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(20)
+                    ),
+                    child: Center(child: CircularProgressIndicator())),
             )
           : (_imageFile == null)
               ? Center(
-                  child: Text("No Image Selected"),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width /1.1,
+                    height: MediaQuery.of(context).size.height/2,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(20)
+                    ),
+                    child: Center(child: Text("No Image Selected"))),
                 )
               : Center(
-                  child: Column(
-                    children: <Widget>[
-                      FittedBox(
-                        child: SizedBox(
-                          width: _image.width.toDouble(),
-                          height: _image.height.toDouble(),
-                          child: CustomPaint(
-                            painter: FacePainter(_image, _faces),
-                          ),
-                        ),
-                      )
-                    ],
+                child: Container(
+                  margin: EdgeInsets.only(left: 10, right: 10),
+                  child: FittedBox(
+                    child: SizedBox(
+                      width: _image.width.toDouble() ,
+                      height: _image.height.toDouble(),
+                      child: CustomPaint(
+                        painter: FacePainter(_image, _faces),
+                      ),
+                    ),
                   ),
                 ),
+              ),
       floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          FloatingActionButton(
-            onPressed: () {
-              getImage(true);
-            },
-            child: Icon(Icons.camera_alt),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  _imageFile = null;
+                });
+              },
+              child: Icon(Icons.refresh),
+            ),
           ),
-           FloatingActionButton(
-            onPressed: () {
-              getImage(false);
-            },
-            child: Icon(Icons.image),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                getImage(true);
+              },
+              child: Icon(Icons.camera_alt),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                getImage(false);
+              },
+              child: Icon(Icons.image),
+            ),
           )
         ],
       ),
