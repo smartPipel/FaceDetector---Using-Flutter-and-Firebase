@@ -19,28 +19,27 @@ class _FaceDetectorState extends State<FaceDetector> {
 
   Future getImage(bool camera) async {
     File image;
-    File croppedImage;
-
+    
     if (camera) {
       image = await ImagePicker.pickImage(source: ImageSource.camera);
-      croppedImage = await ImageCropper.cropImage(
+      await ImageCropper.cropImage(
       sourcePath: image.path,
       aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
       maxWidth: 512,
       maxHeight: 512,
-    );
+      );
     } else {
       image = await ImagePicker.pickImage(source: ImageSource.gallery);
-      croppedImage = await ImageCropper.cropImage(
+      await ImageCropper.cropImage(
       sourcePath: image.path,
       aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
       maxWidth: 512,
       maxHeight: 512,
-    );
+      );
     }
 
     setState(() {
-      _imageFile = croppedImage;
+      _imageFile = image;
       isLoading = true;
     });
 
