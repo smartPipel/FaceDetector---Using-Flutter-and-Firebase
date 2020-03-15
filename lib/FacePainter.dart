@@ -19,7 +19,8 @@ class FacePainter extends CustomPainter{
   void paint(ui.Canvas canvas, ui.Size size) {
     final Paint paint = Paint()
     ..style = PaintingStyle.stroke
-    ..strokeWidth = 2.0
+    ..blendMode = BlendMode.screen 
+    ..strokeWidth = 10.0
     ..color = Colors.yellowAccent;
 
 
